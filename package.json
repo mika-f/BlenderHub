@@ -14,7 +14,8 @@
     "lint:prettier": "prettier --write ./src",
     "lint:eslint": "eslint --format friendly ./src",
     "schema": "run-p schema:*",
-    "schema:config": "typescript-json-schema --noExtraProps --required ./tsconfig.json IInstallations --out ./src/main/schema/installations.json"
+    "schema:config": "typescript-json-schema --noExtraProps --required ./tsconfig.json IConfiguration --out ./src/main/schema/configuration.json",
+    "schema:install": "typescript-json-schema --noExtraProps --required ./tsconfig.json IInstallations --out ./src/main/schema/installations.json"
   },
   "keywords": [],
   "author": {
@@ -81,6 +82,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "autoprefixer": "^10.2.5",
+    "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^4.2.1",
     "electron": "12.0.5",
     "eslint": "^7.24.0",
