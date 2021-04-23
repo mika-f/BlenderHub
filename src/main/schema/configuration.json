@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false,
+    "properties": {
+        "libraryPath": {
+            "type": "string"
+        },
+        "version": {
+            "enum": [
+                "1.0"
+            ],
+            "type": "string"
+        }
+    },
+    "required": [
+        "libraryPath",
+        "version"
+    ],
+    "type": "object"
+}
+

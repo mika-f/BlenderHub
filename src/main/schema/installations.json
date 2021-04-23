@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false,
+    "definitions": {
+        "IInstallation": {
+            "additionalProperties": false,
+            "properties": {
+                "branch": {
+                    "enum": [
+                        "daily",
+                        "experimental",
+                        "stable"
+                    ],
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "branch",
+                "path",
+                "version"
+            ],
+            "type": "object"
+        }
+    },
+    "properties": {
+        "installations": {
+            "items": {
+                "$ref": "#/definitions/IInstallation"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "installations"
+    ],
+    "type": "object"
+}
+
