@@ -1,3 +1,5 @@
+const ReactRefreshTypeScript = require("react-refresh-typescript");
+
 module.exports = [
   // Add support for native node modules
   {
@@ -20,7 +22,10 @@ module.exports = [
     use: {
       loader: 'ts-loader',
       options: {
-        transpileOnly: true
+        transpileOnly: true,
+        getCustomTransformers: () => ({
+          before: process.env.NODE_ENV !== "production" ? [ReactRefreshTypeScript()] : []
+        })
       }
     }
   },

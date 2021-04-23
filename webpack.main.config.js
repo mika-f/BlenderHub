@@ -4,6 +4,7 @@ module.exports = {
    * that runs in the main process.
    */
   entry: './src/index.ts',
+  mode: process.env.NODE_ENV !== "production" ? "development" : "production",
   // Put your normal webpack config below here
   module: {
     rules: require('./webpack.rules'),

@@ -1,4 +1,12 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
-ReactDOM.render(<h2>Hello, Electron World</h2>, document.querySelector("#app"));
+import Container from "./components/container";
+import Header from "./components/header";
+
+const App: React.VFC = () => (
+  <Container>
+    <Header />
+  </Container>
+);
+
+export default App;
