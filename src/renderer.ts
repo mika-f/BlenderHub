@@ -26,6 +26,7 @@
  * ```
  */
 
-import "./index.css";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import "tailwindcss/tailwind.css";
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+import "./renderer/app";
