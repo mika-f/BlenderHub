@@ -1,11 +1,19 @@
 module.exports = {
   purge: [
-    "./src/**/*.ts",
-    "./src/**/*.tsx"
+    "./src/renderer/**/*.ts",
+    "./src/renderer/**/*.tsx"
   ],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "media",
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        surface: {
+          dark: "#121212",
+          light: "#ffffff",
+          light005: "rgba(255, 255, 255, 0.05)"
+        }
+      }
+    },
   },
   variants: {
     extend: {},
