@@ -77,8 +77,10 @@
     "@electron-forge/plugin-webpack": "6.0.0-beta.54",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@types/cheerio": "^0.22.28",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "autoprefixer": "^10.2.5",
@@ -111,10 +113,17 @@
     "typescript-json-schema": "^0.50.0"
   },
   "dependencies": {
+    "ajv": "^8.1.0",
+    "cheerio": "^1.0.0-rc.6",
     "electron-squirrel-startup": "^1.0.0",
+    "got": "^11.8.2",
+    "querystring": "^0.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
+    "react-hooks-global-state": "^1.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-spinners": "^0.10.6",
     "update-electron-app": "^2.0.1"
   }
 }

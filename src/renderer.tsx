@@ -35,3 +35,7 @@ import "tailwindcss/tailwind.css";
 import App from "./renderer/app";
 
 ReactDOM.render(<App />, document.querySelector("#app"));
+
+console.log(
+  "React-Refresh is currently not worked as correctly, see https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/42"
+);
