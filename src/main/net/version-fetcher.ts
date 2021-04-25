@@ -2,10 +2,11 @@ import cheerio from "cheerio";
 import got from "got";
 
 import type { Platform } from "main/platform";
+import { Branch } from "shared/branch";
 
 type Version = {
   version: string;
-  branch: string;
+  branch: Branch;
   url: string;
 };
 
@@ -17,11 +18,14 @@ const fetchStableReleases = async (): Promise<Version[]> => {
     const html = response.body;
 
     const $ = cheerio.load(html);
-    $("pre", "a").each((_, element) => {
+    $("a", "pre").each((_, element) => {
       const url = `https://download.blender.org/release/${$(element).attr("href")}`;
-      const version = $(element).text();
+      const text = $(element).text();
+      const version = text.substring(0, text.length - 1);
 
-      versions.push({ version, url, branch: "stable" });
+      if (version.match(/^Blender\d+\.\d+$/)) {
+        versions.push({ version, url, branch: "stable" });
+      }
     });
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -59,7 +63,7 @@ const fetchExperimentalReleases = async (_platform: Platform): Promise<Version[]
   return versions;
 };
 
-const fetchReleases = async (branch: "stable" | "daily" | "experimental", platform: Platform): Promise<Version[]> => {
+const fetchReleases = async (branch: Branch, platform: Platform): Promise<Version[]> => {
   const versions: Version[] = [];
 
   switch (branch) {
