@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { app, BrowserWindow } from "electron";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
 
 import { runUpdater } from "./auto-update";
 import { registerIpcMessagingApis } from "./messaging";
@@ -30,6 +32,9 @@ const createWindow = (): void => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  // install extensions
+  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).then(() => {});
 };
 
 // This method will be called when Electron has finished
