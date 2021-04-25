@@ -5,7 +5,7 @@ import Button from "renderer/components/button";
 import Container from "renderer/components/container";
 import Sidebar from "renderer/components/sidebar";
 import { useAppDispatch, useAppSelector } from "renderer/hooks/redux";
-import { fetchInstallations } from "renderer/state/installations";
+import { addInstallation, fetchInstallations, flushInstallations } from "renderer/state/installations";
 import { Branch } from "shared/branch";
 
 type Params = { branch: Branch };
@@ -28,6 +28,12 @@ const Home: React.VFC<Props> = () => {
     dispatch(fetchInstallations());
   }, [branch]);
 
+  const onAddExists = () => {
+    dispatch(addInstallation({ branch })).then(() => {
+      dispatch(flushInstallations());
+    });
+  };
+
   return (
     <Container className="h-full flex flex-row flex-grow">
       <Sidebar items={SIDEBAR_ITEMS} />
@@ -39,7 +45,7 @@ const Home: React.VFC<Props> = () => {
             </Button>
           </div>
           <div className="m-2">
-            <Button onClick={() => {}}>Add Exists</Button>
+            <Button onClick={onAddExists}>Add Exists</Button>
           </div>
           <div className="flex flex-col flex-grow justify-center text-2xl">
             <span className="capitalize">Installations ({branch})</span>

@@ -43,7 +43,7 @@ const fetchDailyReleases = async (platform: Platform): Promise<Version[]> => {
     const html = response.body;
 
     const $ = cheerio.load(html);
-    $("section", `builds-list platform-${platform}`).each((_i1, element) => {
+    $(`builds-list platform-${platform}`, "section").each((_i1, element) => {
       $("ul > li > a", element).each((_i2, link) => {
         // eslint-disable-next-line no-console
         console.log($(link).html());

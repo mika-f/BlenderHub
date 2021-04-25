@@ -2,8 +2,11 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Branch } from "shared/branch";
-import { Installation, Installations } from "shared/messaging/installations";
+
+import type { AppDispatch, RootState } from "renderer/store";
+import type { Branch } from "shared/branch";
+import type { FilePath } from "shared/messaging/dialogs";
+import type { Installation, Installations } from "shared/messaging/installations";
 
 type InstallationsState = {
   [key in Branch]: Installations;
@@ -15,17 +18,36 @@ const initialState: InstallationsState = {
   experimental: [],
 };
 
+const addInstallation = createAsyncThunk<{ branch: Branch; executable: FilePath | null }, { branch: Branch }>(
+  "installations/addInstallation",
+  async ({ branch }) => {
+    const executable = await window.messaging.dialogs.showBlenderSelectDialog();
+    return { branch, executable };
+  }
+);
+
 const fetchInstallations = createAsyncThunk("installations/fetchInstallations", () =>
   window.messaging.installations.fetchInstallations()
+);
+
+const flushInstallations = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
+  "installations/flushInstallations",
+  async (_, { getState }) => {
+    const state = getState().installations;
+    const installations: Installations = [];
+
+    installations.push(...state.stable);
+    installations.push(...state.daily);
+    installations.push(...state.experimental);
+
+    window.messaging.installations.flushInstallations({ installations });
+  }
 );
 
 const slice = createSlice({
   name: "installations",
   initialState,
   reducers: {
-    addInstallation: (state, action: PayloadAction<{ branch: Branch; installation: Installation }>) => {
-      state[action.payload.branch] = [...state[action.payload.branch], action.payload.installation];
-    },
     removeInstallation: (state, action: PayloadAction<{ branch: Branch; installation: Installation }>) => {
       const installations = state[action.payload.branch].filter(
         (w) => action.payload.installation.version !== w.version
@@ -34,6 +56,15 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(addInstallation.fulfilled, (state, action) => {
+      if (action.payload.executable === null) {
+        return;
+      }
+
+      const installation = { branch: action.payload.branch, ...action.payload.executable } as Installation;
+      state[action.payload.branch].push(installation);
+    });
+
     builder.addCase(fetchInstallations.fulfilled, (state, action) => {
       const installations = action.payload;
 
@@ -63,5 +94,5 @@ const slice = createSlice({
 
 export { initialState, slice };
 export const { reducer } = slice;
-export { fetchInstallations };
-export const { addInstallation, removeInstallation } = slice.actions;
+export { addInstallation, fetchInstallations, flushInstallations };
+export const { removeInstallation } = slice.actions;
