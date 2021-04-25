@@ -24,7 +24,7 @@ const Header: React.VFC<Props> = () => {
   const hasPrevious = !isInstallations;
 
   return (
-    <header className="h-16 shadow bg-surface-light005">
+    <header className="h-14 shadow bg-surface-light005">
       <div className="flex items-center pt-4 pb-4">
         <div className="flex-grow flex">
           {hasPrevious ? (

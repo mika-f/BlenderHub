@@ -5,6 +5,7 @@ import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom"
 import AppContainer from "./components/app-container";
 import Header from "./components/header";
 import Installations from "./pages/installations";
+import Releases from "./pages/releases";
 import Settings from "./pages/settings";
 import { store } from "./store";
 
@@ -20,6 +21,9 @@ const App: React.VFC = () => (
           </Route>
           <Route path="/installations/:branch">
             <Installations />
+          </Route>
+          <Route path="/releases/:branch">
+            <Releases />
           </Route>
           <Route path="/settings" exact>
             <Settings />

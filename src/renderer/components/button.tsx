@@ -2,13 +2,14 @@ import React from "react";
 
 type Props = {
   onClick: () => void;
+  disabled?: boolean;
   primary?: boolean;
 };
 
-const Button: React.FC<Props> = ({ children, primary, onClick }) => {
+const Button: React.FC<Props> = ({ children, disabled, primary, onClick }) => {
   const classes: string[] = [];
   if (primary) {
-    classes.push("bg-blue-500");
+    classes.push(disabled ? "bg-gray-700" : "bg-blue-500");
   } else {
     classes.push("bg-surface-light005");
   }
@@ -16,6 +17,7 @@ const Button: React.FC<Props> = ({ children, primary, onClick }) => {
   return (
     <button
       type="button"
+      disabled={disabled}
       className={`focus:outline-none rounded shadow py-2 px-4 ${classes.join(" ")}`}
       onClick={onClick}
     >

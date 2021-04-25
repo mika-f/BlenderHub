@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Button from "renderer/components/button";
 import Container from "renderer/components/container";
@@ -24,10 +24,9 @@ const SIDEBAR_ITEMS = [
   { title: "Installations (Experimental)", path: "/installations/experimental" },
 ];
 
-const Home: React.VFC<Props> = () => {
+const Installations: React.VFC<Props> = () => {
   const { branch } = useParams<Params>();
   const installations = useAppSelector((state) => state.installations[branch]);
-  // const releases = useAppSelector((state) => state.releases[branch]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -45,15 +44,15 @@ const Home: React.VFC<Props> = () => {
   };
 
   return (
-    <Container className="h-full flex flex-row flex-grow">
+    <Container className="h-full flex flex-row flex-grow overflow-y-auto">
       <Sidebar items={SIDEBAR_ITEMS} />
       <div className="flex-grow flex flex-col">
         <div className="flex flex-row-reverse p-2">
-          <div className="m-2">
+          <Link to={`/releases/${branch}`} className="m-2">
             <Button onClick={() => {}} primary>
               New Install
             </Button>
-          </div>
+          </Link>
           <div className="m-2">
             <Button onClick={onAddExists}>Add Exists</Button>
           </div>
@@ -81,4 +80,4 @@ const Home: React.VFC<Props> = () => {
   );
 };
 
-export default Home;
+export default Installations;
