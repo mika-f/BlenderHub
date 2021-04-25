@@ -21,7 +21,7 @@ const additionalPlugins = [
       { from: path.resolve(__dirname, "src", "assets"), to: path.resolve(__dirname, ".webpack/renderer", "assets")}
     ]
   }),
-  process.env.NODE_ENV !== "production" && new ReactRefreshWebpackPlugin(),
+  // process.env.NODE_ENV !== "production" && new ReactRefreshWebpackPlugin(),
 ].filter(Boolean);
 
 plugins.push(...additionalPlugins);
@@ -33,6 +33,11 @@ module.exports = {
   },
   plugins: plugins,
   resolve: {
+    alias: {
+      "preload": path.resolve(__dirname, "src", "preload"),
+      "renderer": path.resolve(__dirname, "src", "renderer"),
+      "shared": path.resolve(__dirname, "src", "shared"),
+    },
     extensions: [".js", ".ts", ".jsx", ".tsx", ".css"]
   },
 };

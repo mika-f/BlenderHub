@@ -46,6 +46,10 @@
     "baseUrl": "./",                          /* Base directory to resolve non-absolute module names. */
     /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     "paths": {
+      "main/*": ["./src/main/*"],
+      "preload/*": ["./src/preload/*"],
+      "renderer/*": ["./src/renderer/*"],
+      "shared/*": ["./src/shared/*"],
       "*": ["node_modules/*"]
     },
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
@@ -72,8 +76,9 @@
     "resolveJsonModule": true
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx"
+    "src/electron.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules"

@@ -23,9 +23,9 @@ module.exports = [
       loader: "ts-loader",
       options: {
         transpileOnly: true,
-        getCustomTransformers: () => ({
-          before: process.env.NODE_ENV !== "production" ? [ReactRefreshTypeScript()] : []
-        })
+        // getCustomTransformers: () => ({
+        //   before: process.env.NODE_ENV !== "production" ? [ReactRefreshTypeScript()] : []
+        // })
       }
     }
   },
