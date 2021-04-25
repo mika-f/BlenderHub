@@ -24,7 +24,7 @@ const fetchStableReleases = async (): Promise<Version[]> => {
       const version = text.substring(0, text.length - 1);
 
       if (version.match(/^Blender\d+\.\d+$/)) {
-        versions.push({ version, url, branch: "stable" });
+        versions.push({ version: version.replaceAll("Blender", ""), url, branch: "stable" });
       }
     });
   } catch (err) {
