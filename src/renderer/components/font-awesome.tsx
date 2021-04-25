@@ -7,7 +7,7 @@ type Props = {
 };
 
 const FontAwesome: React.VFC<Props> = ({ className, icon, type }) => (
-  <svg className={`stroke-current fill-current ${className}`} style={{ verticalAlign: "-0.125em;" }}>
+  <svg className={`stroke-current fill-current ${className}`} style={{ verticalAlign: "-0.125em" }}>
     <use xlinkHref={`/assets/fonts/${type}.svg#${icon}`} />
   </svg>
 );
