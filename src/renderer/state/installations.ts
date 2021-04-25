@@ -80,15 +80,22 @@ const slice = createSlice({
 
         switch (installation.branch) {
           case "stable":
-            state.stable.push(installation);
+            if (!state.stable.find((w) => w.executable === installation.executable)) {
+              state.stable.push(installation);
+            }
+
             break;
 
           case "daily":
-            state.daily.push(installation);
+            if (!state.daily.find((w) => w.executable === installation.executable)) {
+              state.daily.push(installation);
+            }
             break;
 
           case "experimental":
-            state.experimental.push(installation);
+            if (!state.experimental.find((w) => w.executable === installation.executable)) {
+              state.experimental.push(installation);
+            }
             break;
 
           default:
