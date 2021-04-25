@@ -1,5 +1,21 @@
 const path = require("path");
 
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+
+const plugins = [];
+
+const additionalPlugins = [
+  new CopyWebpackPlugin({
+    patterns: [
+      { context: path.resolve(__dirname, "src/main/schema"), from: "*.json", to: path.resolve(__dirname, ".webpack/main")}
+    ]
+  }),
+  // process.env.NODE_ENV !== "production" && new ReactRefreshWebpackPlugin(),
+].filter(Boolean);
+
+plugins.push(...additionalPlugins);
+
+
 module.exports = {
   /**
    * This is the main entry point for your application, it's the first file
@@ -11,6 +27,7 @@ module.exports = {
   module: {
     rules: require("./webpack.rules"),
   },
+  plugins: plugins,
   resolve: {
     alias: {
       "main": path.resolve(__dirname, "src", "main"),
