@@ -19,7 +19,11 @@ const Sidebar: React.VFC<Props> = ({ items }) => {
         }
 
         return (
-          <Link to={item.path} className={`ml-4 h-12 flex flex-col justify-center ${additionalClasses}`}>
+          <Link
+            to={item.path}
+            key={item.path}
+            className={`ml-4 h-12 flex flex-col justify-center ${additionalClasses}`}
+          >
             {item.title}
           </Link>
         );
