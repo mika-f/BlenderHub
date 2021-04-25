@@ -32,7 +32,7 @@ import ReactDOM from "react-dom";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import "tailwindcss/tailwind.css";
 
-import App from "./renderer/app";
+import App from "./app";
 
 ReactDOM.render(<App />, document.querySelector("#app"));
 

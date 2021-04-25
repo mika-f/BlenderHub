@@ -1,9 +1,11 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { app, BrowserWindow } from "electron";
 
-import { runUpdater } from "./main/auto-update";
+import { runUpdater } from "./auto-update";
+import { registerIpcMessagingApis } from "./messaging";
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -16,6 +18,11 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    webPreferences: {
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      contextIsolation: true,
+      worldSafeExecuteJavaScript: true,
+    },
   });
 
   // and load the index.html of the app.
@@ -51,3 +58,4 @@ app.on("activate", () => {
 // code. You can also put them in separate files and import them here.
 
 runUpdater();
+registerIpcMessagingApis();
