@@ -17,12 +17,11 @@ const getAppTitle = (path: string) => {
 };
 
 const Header: React.VFC<Props> = () => {
-  const isStableInstallations = useRouteMatch("/")?.isExact;
-  const isInstallations = useRouteMatch("/installations/:type")?.isExact;
+  const isInstallations = useRouteMatch("/installations/:branch")?.isExact;
   const path = useLocation().pathname;
   const title = getAppTitle(path);
 
-  const hasPrevious = !isStableInstallations && !isInstallations;
+  const hasPrevious = !isInstallations;
 
   return (
     <header className="h-16 shadow bg-surface-light005">

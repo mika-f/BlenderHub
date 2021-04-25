@@ -16,7 +16,7 @@ const App: React.VFC = () => (
         <Route path="/" exact>
           <Redirect to="/installations/stable" />
         </Route>
-        <Route path="/installations/:type">
+        <Route path="/installations/:branch">
           <Installations />
         </Route>
         <Route path="/settings" exact>
