@@ -5,8 +5,14 @@ import Button from "renderer/components/button";
 import Container from "renderer/components/container";
 import Sidebar from "renderer/components/sidebar";
 import { useAppDispatch, useAppSelector } from "renderer/hooks/redux";
-import { addInstallation, fetchInstallations, flushInstallations } from "renderer/state/installations";
+import {
+  addInstallation,
+  executeInstallation,
+  fetchInstallations,
+  flushInstallations,
+} from "renderer/state/installations";
 import { Branch } from "shared/branch";
+import { Installation } from "shared/messaging/installations";
 
 type Params = { branch: Branch };
 
@@ -26,12 +32,16 @@ const Home: React.VFC<Props> = () => {
 
   useEffect(() => {
     dispatch(fetchInstallations());
-  }, [branch]);
+  }, []);
 
   const onAddExists = () => {
     dispatch(addInstallation({ branch })).then(() => {
       dispatch(flushInstallations());
     });
+  };
+
+  const onExecuteBlender = (blender: Installation) => {
+    dispatch(executeInstallation({ installation: blender }));
   };
 
   return (
@@ -52,9 +62,17 @@ const Home: React.VFC<Props> = () => {
           </div>
         </div>
         {installations.length > 0 ? (
-          installations.map((w) => {
-            <div>{w.version}</div>;
-          })
+          installations.map((w) => (
+            <div
+              key={w.executable}
+              className="h-14 px-4 border-b border-surface-light005 flex flex-row justify-center items-center"
+            >
+              <div className="flex-grow">Blender {w.version}</div>
+              <Button onClick={() => onExecuteBlender(w)} primary>
+                Launch
+              </Button>
+            </div>
+          ))
         ) : (
           <div className="h-full flex justify-center items-center">No installation found</div>
         )}

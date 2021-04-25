@@ -1,16 +1,30 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcMain } from "electron";
+import { spawn } from "child_process";
 import fs from "fs";
 import { join } from "path";
 import { promisify } from "util";
 
-import type { Installations } from "shared/messaging/installations";
+import type { Installation, Installations } from "shared/messaging/installations";
 
 import { readInstallations, writeInstallations } from "main/io/configuration";
 import { getDefaultUserDataDirectory } from "main/io/directory";
-import { IPC_EVENT_NAME_FETCH_INSTALLATIONS, IPC_EVENT_NAME_FLUSH_INSTALLATIONS } from "shared/messaging/installations";
+import {
+  IPC_EVENT_NAME_EXECUTE_INSTALLATION,
+  IPC_EVENT_NAME_FETCH_INSTALLATIONS,
+  IPC_EVENT_NAME_FLUSH_INSTALLATIONS,
+} from "shared/messaging/installations";
 
 const setup = () => {
+  ipcMain.handle(IPC_EVENT_NAME_EXECUTE_INSTALLATION, async (_, { installation }: { installation: Installation }) => {
+    const isExists = await promisify(fs.exists)(installation.executable);
+    if (!isExists) {
+      return;
+    }
+
+    spawn(installation.executable);
+  });
+
   ipcMain.handle(IPC_EVENT_NAME_FETCH_INSTALLATIONS, async () => {
     const dir = getDefaultUserDataDirectory();
     if (dir === undefined) {

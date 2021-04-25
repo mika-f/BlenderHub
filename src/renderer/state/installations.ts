@@ -26,6 +26,13 @@ const addInstallation = createAsyncThunk<{ branch: Branch; executable: FilePath 
   }
 );
 
+const executeInstallation = createAsyncThunk<void, { installation: Installation }>(
+  "installations/executeInstallation",
+  async ({ installation }) => {
+    await window.messaging.installations.executeInstallation({ installation });
+  }
+);
+
 const fetchInstallations = createAsyncThunk("installations/fetchInstallations", () =>
   window.messaging.installations.fetchInstallations()
 );
@@ -94,5 +101,5 @@ const slice = createSlice({
 
 export { initialState, slice };
 export const { reducer } = slice;
-export { addInstallation, fetchInstallations, flushInstallations };
+export { addInstallation, executeInstallation, fetchInstallations, flushInstallations };
 export const { removeInstallation } = slice.actions;
