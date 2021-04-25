@@ -22,7 +22,7 @@ const setup = () => {
       return;
     }
 
-    spawn(installation.executable);
+    spawn(installation.executable, { detached: true, stdio: "ignore" });
   });
 
   ipcMain.handle(IPC_EVENT_NAME_FETCH_INSTALLATIONS, async () => {
