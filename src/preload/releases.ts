@@ -9,20 +9,23 @@ type ReturnOf<T extends keyof MessagingSignature> = ReturnType<MessagingSignatur
 
 const signatures: MessagingSignature = {
   fetchBlenderStableReleases: async (): Promise<Releases> => {
-    const releases = (await ipcRenderer.invoke(IPC_EVENT_NAME, "stable")) as ReturnOf<"fetchBlenderStableReleases">;
+    const releases = (await ipcRenderer.invoke(IPC_EVENT_NAME, {
+      branch: "stable",
+    })) as ReturnOf<"fetchBlenderStableReleases">;
 
     return releases;
   },
   fetchBlenderDailyReleases: async (): Promise<Releases> => {
-    const releases = (await ipcRenderer.invoke(IPC_EVENT_NAME, "daily")) as ReturnOf<"fetchBlenderDailyReleases">;
+    const releases = (await ipcRenderer.invoke(IPC_EVENT_NAME, {
+      branch: "daily",
+    })) as ReturnOf<"fetchBlenderDailyReleases">;
 
     return releases;
   },
   fetchBlenderExperimentalReleases: async (): Promise<Releases> => {
-    const releases = (await ipcRenderer.invoke(
-      IPC_EVENT_NAME,
-      "experimental"
-    )) as ReturnOf<"fetchBlenderExperimentalReleases">;
+    const releases = (await ipcRenderer.invoke(IPC_EVENT_NAME, {
+      branch: "experimental",
+    })) as ReturnOf<"fetchBlenderExperimentalReleases">;
 
     return releases;
   },
