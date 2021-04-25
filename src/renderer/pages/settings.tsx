@@ -1,19 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import Container from "../components/container";
-
-import { useGlobalState } from "../state/global";
+import Container from "renderer/components/container";
 
 type Props = {};
 
-const Settings: React.VFC<Props> = () => {
-  const [, setTitle] = useGlobalState("title");
-
-  useEffect(() => {
-    setTitle("Settings");
-  }, []);
-
-  return <Container>Settings</Container>;
-};
+const Settings: React.VFC<Props> = () => <Container>Settings</Container>;
 
 export default Settings;
