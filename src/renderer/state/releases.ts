@@ -5,6 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { Branch } from "shared/branch";
 import { Releases } from "shared/messaging/releases";
+import { sortByVersionNumber } from "shared/utils";
 
 type ReleasesState = {
   [key in Branch]: Releases;
@@ -43,7 +44,7 @@ const slice = createSlice({
     builder.addCase(fetchReleases.fulfilled, (state, action) => {
       const { branch, releases } = action.payload;
 
-      state[branch] = releases;
+      state[branch] = sortByVersionNumber(releases, (w) => w.version);
     });
   },
 });

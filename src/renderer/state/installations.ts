@@ -7,6 +7,7 @@ import type { AppDispatch, RootState } from "renderer/store";
 import type { Branch } from "shared/branch";
 import type { FilePath } from "shared/messaging/dialogs";
 import type { Installation, Installations } from "shared/messaging/installations";
+import { sortByVersionNumber } from "shared/utils";
 
 type InstallationsState = {
   [key in Branch]: Installations;
@@ -73,7 +74,7 @@ const slice = createSlice({
     });
 
     builder.addCase(fetchInstallations.fulfilled, (state, action) => {
-      const installations = action.payload;
+      const installations = sortByVersionNumber(action.payload, (w) => w.version);
 
       for (let i = 0; i < installations.length; i += 1) {
         const installation = installations[i];
