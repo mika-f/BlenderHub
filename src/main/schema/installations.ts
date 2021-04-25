@@ -2,10 +2,12 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "util";
 
+import { Branch } from "shared/branch";
+
 interface IInstallation {
   version: string;
-  branch: "stable" | "daily" | "experimental";
-  path: string;
+  branch: Branch;
+  executable: string;
 }
 
 interface IInstallations {
