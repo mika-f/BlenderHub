@@ -4,9 +4,9 @@ import Ajv from "ajv";
 import fs from "fs";
 import { promisify } from "util";
 
-import { schema } from "../schema/installations";
+import type { IInstallations } from "main/schema/installations";
 
-import type { IInstallations } from "../schema/installations";
+import { schema } from "main/schema/installations";
 
 const readInstallations = async (path: string): Promise<IInstallations> => {
   const validator = new Ajv().compile({ ...(await schema()), $async: true } as AsyncSchema);
