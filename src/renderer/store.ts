@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import { reducer as installationsReducer } from "renderer/state/installations";
+import { reducer as releasesReducer } from "renderer/state/releases";
 
 const store = configureStore({
   reducer: {
     installations: installationsReducer,
+    releases: releasesReducer,
   },
 });
 
