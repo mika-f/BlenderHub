@@ -7,6 +7,7 @@ import type { AppDispatch, RootState } from "renderer/store";
 import type { Branch } from "shared/branch";
 import type { FilePath } from "shared/messaging/dialogs";
 import type { Installation, Installations } from "shared/messaging/installations";
+import type { Release } from "shared/messaging/releases";
 import { sortByVersionNumber } from "shared/utils";
 
 type InstallationsState = {
@@ -56,11 +57,17 @@ const slice = createSlice({
   name: "installations",
   initialState,
   reducers: {
+    addInstallationFromRelease: (state, action: PayloadAction<{ path: string; release: Release }>) => {
+      const { path, release } = action.payload;
+
+      state[release.branch].push({ branch: release.branch, executable: path, version: release.version });
+      state[release.branch] = sortByVersionNumber(state[release.branch], (w) => w.version);
+    },
     removeInstallation: (state, action: PayloadAction<{ branch: Branch; installation: Installation }>) => {
       const installations = state[action.payload.branch].filter(
         (w) => action.payload.installation.version !== w.version
       );
-      state[action.payload.branch] = installations;
+      state[action.payload.branch] = sortByVersionNumber(installations, (w) => w.version);
     },
   },
   extraReducers: (builder) => {
@@ -71,6 +78,7 @@ const slice = createSlice({
 
       const installation = { branch: action.payload.branch, ...action.payload.executable } as Installation;
       state[action.payload.branch].push(installation);
+      state[action.payload.branch] = sortByVersionNumber(state[action.payload.branch], (w) => w.version);
     });
 
     builder.addCase(fetchInstallations.fulfilled, (state, action) => {
@@ -110,4 +118,4 @@ const slice = createSlice({
 export { initialState, slice };
 export const { reducer } = slice;
 export { addInstallation, executeInstallation, fetchInstallations, flushInstallations };
-export const { removeInstallation } = slice.actions;
+export const { addInstallationFromRelease, removeInstallation } = slice.actions;

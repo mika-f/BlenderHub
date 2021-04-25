@@ -121,6 +121,7 @@
     "@reduxjs/toolkit": "^1.5.1",
     "ajv": "^8.1.0",
     "cheerio": "^1.0.0-rc.6",
+    "electron-dl": "^3.2.1",
     "electron-squirrel-startup": "^1.0.0",
     "got": "^11.8.2",
     "querystring": "^0.2.1",

@@ -8,8 +8,8 @@ import Button from "renderer/components/button";
 import Container from "renderer/components/container";
 import Sidebar from "renderer/components/sidebar";
 import { useAppDispatch, useAppSelector } from "renderer/hooks/redux";
-import { fetchInstallations } from "renderer/state/installations";
-import { fetchReleases } from "renderer/state/releases";
+import { addInstallationFromRelease, fetchInstallations } from "renderer/state/installations";
+import { updatePercentage, downloadRelease, fetchReleases } from "renderer/state/releases";
 
 type Params = { branch: Branch };
 
@@ -35,9 +35,28 @@ const Releases: React.VFC<Props> = () => {
     dispatch(fetchReleases({ branch }));
   }, [branch]);
 
-  const onInstall = (release: Release) => {};
+  const onInstall = (release: Release) => {
+    const onProgress = (progress: number) => {
+      dispatch(updatePercentage({ branch, release, percentage: progress }));
+    };
+    const onCompleted = (path: string) => {
+      dispatch(addInstallationFromRelease({ path, release }));
+    };
+
+    dispatch(downloadRelease({ branch, release, onProgress, onCompleted }));
+  };
 
   const isAlreadyInstalled = (release: Release) => !!installations.find((w) => w.version === release.version);
+
+  const isDownloading = (release: Release) => release.state && release.state.isDownloading;
+
+  const getLabel = (release: Release) => {
+    if (isAlreadyInstalled(release)) {
+      return "Installed";
+    }
+
+    return isDownloading(release) ? "Downloading" : "Install";
+  };
 
   return (
     <Container className="h-full flex flex-row flex-grow overflow-auto">
@@ -56,8 +75,13 @@ const Releases: React.VFC<Props> = () => {
                 className="h-14 px-4 border-b border-surface-light005 flex flex-row justify-center items-center"
               >
                 <div className="flex-grow">Blender {w.version}</div>
-                <Button onClick={() => onInstall(w)} primary disabled={isAlreadyInstalled(w)}>
-                  {isAlreadyInstalled(w) ? "Installed" : "Install"}
+                {isDownloading(w) ? (
+                  <div className="m-2 h-2 w-24 bg-surface-light005">
+                    <div className="min-w-0 max-w-24 bg-blue-500 h-2" style={{ width: `${w.state?.percentage}%` }} />
+                  </div>
+                ) : null}
+                <Button onClick={() => onInstall(w)} primary disabled={isAlreadyInstalled(w) || isDownloading(w)}>
+                  {getLabel(w)}
                 </Button>
               </div>
             ))}
