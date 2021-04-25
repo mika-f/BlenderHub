@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 
 import Container from "renderer/components/container";
 import Sidebar from "renderer/components/sidebar";
-import { fetchBlenderReleasesWithInstallations } from "renderer/messaging/fetcher";
-import { useGlobalState } from "renderer/state/global";
+import { useAppDispatch } from "renderer/hooks/redux";
+import { fetchInstallations } from "renderer/state/installations";
 import { Branch } from "shared/branch";
 
 type Params = { branch: Branch };
@@ -18,16 +18,12 @@ const SIDEBAR_ITEMS = [
 ];
 
 const Home: React.VFC<Props> = () => {
-  const [installations, setInstallations] = useGlobalState("installations");
   const { branch } = useParams<Params>();
+  // const installations = useAppSelector((state) => state.installations[branch]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (installations[branch].versions.length === 0) {
-      fetchBlenderReleasesWithInstallations(branch).then((items) => {
-        installations[branch].versions = items;
-        setInstallations(installations);
-      });
-    }
+    dispatch(fetchInstallations());
   }, [branch]);
 
   return (
