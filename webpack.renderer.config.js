@@ -18,7 +18,7 @@ rules.push({
 const additionalPlugins = [
   new CopyWebpackPlugin({
     patterns: [
-      { from: path.resolve(__dirname, "src", "assets"), to: path.resolve(__dirname, ".webpack/renderer", "assets")}
+      { from: path.resolve(__dirname, "src", "static"), to: path.resolve(__dirname, ".webpack/renderer", "static")}
     ]
   }),
   // process.env.NODE_ENV !== "production" && new ReactRefreshWebpackPlugin(),
