@@ -10,9 +10,9 @@ import { schema } from "main/schema/installations";
 
 const readInstallations = async (path: string): Promise<IInstallations> => {
   const validator = new Ajv().compile({ ...(await schema()), $async: true } as AsyncSchema);
-  const configuration = await promisify(fs.readFile)(path).then((w) => JSON.parse(w.toString()));
+  const installations = await promisify(fs.readFile)(path).then((w) => JSON.parse(w.toString()));
 
-  return validator(configuration)
+  return validator(installations)
     .then((w) => w as IInstallations)
     .catch(() => ({ installations: [] }));
 };
