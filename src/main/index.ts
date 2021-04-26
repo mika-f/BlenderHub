@@ -49,6 +49,9 @@ const createWindow = (): void => {
 
     // install extensions
     installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).then(() => {});
+  } else {
+    mainWindow.removeMenu();
+    mainWindow.setMenuBarVisibility(false);
   }
 };
 
