@@ -9,7 +9,7 @@ import { promisify } from "util";
 import { readConfiguration } from "main/io/configurations";
 import { decompress, getConfigurationsFilePath, getDirectoryFiles } from "main/io/file";
 import { makeDownloadUrl } from "main/io/url";
-import { fetchReleases } from "main/net/version-fetcher";
+import { fetchReleases } from "main/net/scraper";
 import { getPlatform, getPlatformExecutable } from "main/platform";
 import { Branch } from "shared/branch";
 import {
