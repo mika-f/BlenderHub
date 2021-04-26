@@ -8,7 +8,7 @@ import Button from "renderer/components/button";
 import Container from "renderer/components/container";
 import Sidebar from "renderer/components/sidebar";
 import { useAppDispatch, useAppSelector } from "renderer/hooks/redux";
-import { addInstallationFromRelease, fetchInstallations } from "renderer/state/installations";
+import { addInstallationFromRelease, fetchInstallations, flushInstallations } from "renderer/state/installations";
 import { updatePercentage, downloadRelease, extractDownloadedRelease, fetchReleases } from "renderer/state/releases";
 
 type Params = { branch: Branch };
@@ -44,6 +44,7 @@ const Releases: React.VFC<Props> = () => {
         console.log(w.payload);
         // @ts-ignore
         dispatch(addInstallationFromRelease({ path: w.payload.path, release }));
+        dispatch(flushInstallations());
       });
     };
 
