@@ -6,6 +6,8 @@ import os from "os";
 import { join } from "path";
 import { promisify } from "util";
 
+import { readConfiguration } from "main/io/configurations";
+import { decompress, getConfigurationsFilePath } from "main/io/file";
 import { makeDownloadUrl } from "main/io/url";
 import { fetchReleases } from "main/net/version-fetcher";
 import { getPlatform } from "main/platform";
@@ -20,12 +22,10 @@ import {
 const setup = () => {
   ipcMain.handle(
     IPC_EVENT_NAME_DOWNLOAD_BLENDER,
-    async (event, { branch, version, url: baseUrl }: { branch: Branch; version: string; url: string }) => {
+    async (_, { branch, version, url: baseUrl }: { branch: Branch; version: string; url: string }) => {
       const win = BrowserWindow.getFocusedWindow();
       const dir = await promisify(fs.mkdtemp)(join(os.tmpdir(), "blender-hub"));
       const url = makeDownloadUrl(baseUrl, branch, version);
-
-      console.log(`Download: ${url} to ${dir}.`);
 
       await download(win!, url, {
         directory: dir,

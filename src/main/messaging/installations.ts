@@ -7,7 +7,7 @@ import { promisify } from "util";
 
 import type { Installation, Installations } from "shared/messaging/installations";
 
-import { readInstallations, writeInstallations } from "main/io/configuration";
+import { readInstallations, writeInstallations } from "main/io/installations";
 import { getDefaultUserDataDirectory } from "main/io/directory";
 import {
   IPC_EVENT_NAME_EXECUTE_INSTALLATION,
