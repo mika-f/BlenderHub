@@ -1,13 +1,18 @@
 {
   "name": "blender-hub",
-  "productName": "blender-hub",
+  "productName": "Blender Hub",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Blender Hub is an application that could install, uninstall, manage Blender versions, and associate .blend extensions with a specific version.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "run-s --continue-on-error make:*",
+    "make:win-x64": "electron-forge make --arch x64 --platform win32",
+    "make:win-arm": "electron-forge make --arch arm64 --platform win32",
+    "make:mac-x64": "electron-forge make --arch x64 --platform darwin",
+    "make:mac-arm": "electron-forge make --arch arm64 --platform darwin",
+    "make:linux": "electron-forge make --arch x64 --platform linux",
     "publish": "electron-forge publish",
     "test": "jest",
     "lint": "run-p lint:*",
@@ -25,12 +30,21 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "appCopyright": "Copyright (c) 2021 Natsuneko",
+        "executableName": "BlenderHub",
+        "name": "Blender Hub",
+        "win32metadata": {
+          "CompanyName": "Natsuneko Laboratory",
+          "FileDescription": "Blender Hub",
+          "ProductName": "BLender Hub"
+        }
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "blender_hub"
+            "name": "BlenderHub"
           }
         },
         {
