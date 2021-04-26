@@ -16,6 +16,7 @@ import {
   IPC_EVENT_NAME_DOWNLOAD_BLENDER,
   IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED,
   IPC_EVENT_NAME_DOWNLOAD_BLENDER_PROGRESS,
+  IPC_EVENT_NAME_EXTRACT_DOWNLOADED_RELEASE,
   IPC_EVENT_NAME_FETCH_BLENDER_RELEASES,
 } from "shared/messaging/releases";
 
@@ -36,6 +37,17 @@ const setup = () => {
           win?.webContents.send(IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED, { path });
         },
       });
+    }
+  );
+
+  ipcMain.handle(
+    IPC_EVENT_NAME_EXTRACT_DOWNLOADED_RELEASE,
+    async (_, { path, version }: { path: string; version: string }) => {
+      const configuration = await readConfiguration(getConfigurationsFilePath());
+      const dest = join(configuration.libraryPath, "versions", version);
+      await decompress(path, dest);
+
+      return dest;
     }
   );
 

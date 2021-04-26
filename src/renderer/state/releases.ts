@@ -33,6 +33,14 @@ const downloadRelease = createAsyncThunk<
   return { branch, version: release.version };
 });
 
+const extractDownloadedRelease = createAsyncThunk<
+  { path: string; branch: Branch; version: string },
+  { path: string; branch: Branch; version: string }
+>("releases/extractDownloadedRelease", async ({ path, branch, version }) => {
+  const dest = await window.messaging.releases.extractDownloadedRelease({ path, version });
+  return { path: dest, branch, version };
+});
+
 const fetchReleases = createAsyncThunk<{ branch: Branch; releases: Releases }, { branch: Branch }>(
   "releases/fetchReleases",
   async ({ branch }) => {
@@ -68,8 +76,9 @@ const slice = createSlice({
     builder.addCase(downloadRelease.pending, (state, action) => {
       const { branch, release } = action.meta.arg;
       const downloading = state[branch].find((w) => w.version === release.version);
+
       if (downloading) {
-        downloading.state = { isDownloading: true, percentage: 0 };
+        downloading.state = { operation: "download", percentage: 0 };
       }
     });
 
@@ -77,7 +86,25 @@ const slice = createSlice({
       const { branch, version } = action.payload;
 
       if (state[branch].find((w) => w.version === version)) {
-        state[branch].find((w) => w.version === version)!.state = { isDownloading: true, percentage: 0 };
+        state[branch].find((w) => w.version === version)!.state = { operation: "download", percentage: 0 };
+      }
+    });
+
+    builder.addCase(extractDownloadedRelease.pending, (state, action) => {
+      const { branch, version } = action.meta.arg;
+      const extracting = state[branch].find((w) => w.version === version);
+
+      if (extracting) {
+        extracting.state = { operation: "extract", percentage: 0 };
+      }
+    });
+
+    builder.addCase(extractDownloadedRelease.fulfilled, (state, action) => {
+      const { branch, version } = action.meta.arg;
+      const extracting = state[branch].find((w) => w.version === version);
+
+      if (extracting) {
+        extracting.state = { operation: "extract", percentage: 100 };
       }
     });
 
@@ -98,5 +125,5 @@ const slice = createSlice({
 
 export { initialState, slice };
 export const { reducer } = slice;
-export { downloadRelease, fetchReleases };
+export { downloadRelease, extractDownloadedRelease, fetchReleases };
 export const { updatePercentage } = slice.actions;

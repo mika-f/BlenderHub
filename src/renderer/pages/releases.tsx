@@ -9,7 +9,7 @@ import Container from "renderer/components/container";
 import Sidebar from "renderer/components/sidebar";
 import { useAppDispatch, useAppSelector } from "renderer/hooks/redux";
 import { addInstallationFromRelease, fetchInstallations } from "renderer/state/installations";
-import { updatePercentage, downloadRelease, fetchReleases } from "renderer/state/releases";
+import { updatePercentage, downloadRelease, extractDownloadedRelease, fetchReleases } from "renderer/state/releases";
 
 type Params = { branch: Branch };
 
@@ -40,7 +40,11 @@ const Releases: React.VFC<Props> = () => {
       dispatch(updatePercentage({ branch, release, percentage: progress }));
     };
     const onCompleted = (path: string) => {
-      dispatch(addInstallationFromRelease({ path, release }));
+      dispatch(extractDownloadedRelease({ path, branch, version: release.version })).then((w) => {
+        console.log(w.payload);
+        // @ts-ignore
+        dispatch(addInstallationFromRelease({ path: w.payload.path, release }));
+      });
     };
 
     dispatch(downloadRelease({ branch, release, onProgress, onCompleted }));
@@ -48,7 +52,7 @@ const Releases: React.VFC<Props> = () => {
 
   const isAlreadyInstalled = (release: Release) => !!installations.find((w) => w.version === release.version);
 
-  const isDownloading = (release: Release) => release.state && release.state.isDownloading;
+  const isDownloading = (release: Release) => release.state && release.state.operation === "download";
 
   const getLabel = (release: Release) => {
     if (isAlreadyInstalled(release)) {

@@ -7,6 +7,7 @@ import {
   IPC_EVENT_NAME_DOWNLOAD_BLENDER,
   IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED,
   IPC_EVENT_NAME_DOWNLOAD_BLENDER_PROGRESS,
+  IPC_EVENT_NAME_EXTRACT_DOWNLOADED_RELEASE,
   IPC_EVENT_NAME_FETCH_BLENDER_RELEASES,
 } from "shared/messaging/releases";
 
@@ -31,6 +32,10 @@ const signatures: MessagingSignature = {
     });
 
     await ipcRenderer.invoke(IPC_EVENT_NAME_DOWNLOAD_BLENDER, { branch, version, url });
+  },
+  extractDownloadedRelease: async ({ path, version }): Promise<string> => {
+    const dest = await ipcRenderer.invoke(IPC_EVENT_NAME_EXTRACT_DOWNLOADED_RELEASE, { path, version });
+    return dest;
   },
   fetchBlenderStableReleases: async (): Promise<Releases> => {
     const releases = (await ipcRenderer.invoke(IPC_EVENT_NAME_FETCH_BLENDER_RELEASES, {

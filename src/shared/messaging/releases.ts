@@ -5,7 +5,7 @@ type Release = {
   branch: Branch;
   url: string;
   state?: {
-    isDownloading: boolean;
+    operation: "download" | "extract";
     percentage: number;
   };
 };
@@ -24,6 +24,7 @@ type MessagingSignature = {
     onProgress: OnProgressCallback;
     onCompleted: OnCompletedCallback;
   }) => Promise<void>;
+  extractDownloadedRelease: (args: { path: string; version: string }) => Promise<string>;
   fetchBlenderStableReleases: () => Promise<Releases>;
   fetchBlenderDailyReleases: () => Promise<Releases>;
   fetchBlenderExperimentalReleases: () => Promise<Releases>;
@@ -32,6 +33,7 @@ type MessagingSignature = {
 const IPC_EVENT_NAME_DOWNLOAD_BLENDER = "download-blender";
 const IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED = "download-blender-completed";
 const IPC_EVENT_NAME_DOWNLOAD_BLENDER_PROGRESS = "download-blender-progress";
+const IPC_EVENT_NAME_EXTRACT_DOWNLOADED_RELEASE = "extract-downloaded-release";
 const IPC_EVENT_NAME_FETCH_BLENDER_RELEASES = "fetch-blender-releases";
 
 export type { OnCompletedCallback, OnProgressCallback, Release, Releases, MessagingSignature };
@@ -40,5 +42,6 @@ export {
   IPC_EVENT_NAME_DOWNLOAD_BLENDER,
   IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED,
   IPC_EVENT_NAME_DOWNLOAD_BLENDER_PROGRESS,
+  IPC_EVENT_NAME_EXTRACT_DOWNLOADED_RELEASE,
   IPC_EVENT_NAME_FETCH_BLENDER_RELEASES,
 };
