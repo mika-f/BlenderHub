@@ -23,7 +23,7 @@ const signatures: MessagingSignature = {
 
     ipcRenderer.on(IPC_EVENT_NAME_DOWNLOAD_BLENDER_PROGRESS, onProgressInternal);
 
-    ipcRenderer.on(IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED, onCompleted);
+    ipcRenderer.on(IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED, onCompletedInternal);
 
     ipcRenderer.once(IPC_EVENT_NAME_DOWNLOAD_BLENDER_COMPLETED, () => {
       ipcRenderer.removeListener(IPC_EVENT_NAME_DOWNLOAD_BLENDER_PROGRESS, onProgressInternal);
