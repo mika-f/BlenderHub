@@ -10,7 +10,7 @@ import { readConfiguration } from "main/io/configurations";
 import { decompress, getConfigurationsFilePath } from "main/io/file";
 import { makeDownloadUrl } from "main/io/url";
 import { fetchReleases } from "main/net/version-fetcher";
-import { getPlatform } from "main/platform";
+import { getPlatform, getPlatformExecutable } from "main/platform";
 import { Branch } from "shared/branch";
 import {
   IPC_EVENT_NAME_DOWNLOAD_BLENDER,
@@ -47,7 +47,7 @@ const setup = () => {
       const dest = join(configuration.libraryPath, "versions", version);
       await decompress(path, dest);
 
-      return dest;
+      return join(`${dest}`, `Blender.${getPlatformExecutable()}`);
     }
   );
 
