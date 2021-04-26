@@ -1,7 +1,7 @@
 {
   "name": "blender-hub",
   "productName": "Blender Hub",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Blender Hub is an application that could install, uninstall, manage Blender versions, and associate .blend extensions with a specific version.",
   "main": ".webpack/main",
   "scripts": {
@@ -32,12 +32,8 @@
     "forge": {
       "packagerConfig": {
         "appCopyright": "Copyright (c) 2021 Natsuneko",
-        "executableName": "BlenderHub",
-        "name": "Blender Hub",
         "win32metadata": {
-          "CompanyName": "Natsuneko Laboratory",
-          "FileDescription": "Blender Hub",
-          "ProductName": "BLender Hub"
+          "CompanyName": "Natsuneko Laboratory"
         }
       },
       "makers": [
@@ -96,6 +92,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/adm-zip": "^0.4.34",
     "@types/cheerio": "^0.22.28",
+    "@types/electron-window-state": "^2.0.34",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-redux": "^7.1.16",
@@ -138,7 +135,9 @@
     "ajv": "^8.1.0",
     "cheerio": "^1.0.0-rc.6",
     "electron-dl": "^3.2.1",
+    "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-window-state": "^5.0.3",
     "extract-dmg": "^1.0.0",
     "got": "^11.8.2",
     "jsonfile": "^6.1.0",

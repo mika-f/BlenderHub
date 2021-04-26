@@ -2,6 +2,8 @@
 import { app, BrowserWindow } from "electron";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
+import isDev from "electron-is-dev";
+import windowStateKeeper from "electron-window-state";
 
 import { runUpdater } from "./auto-update";
 import { registerIpcMessagingApis } from "./messaging";
@@ -16,10 +18,19 @@ if (require("electron-squirrel-startup")) {
 }
 
 const createWindow = (): void => {
+  const previousState = windowStateKeeper({
+    defaultHeight: 600,
+    defaultWidth: 850,
+  });
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    x: previousState.x,
+    y: previousState.y,
+    height: previousState.height,
+    width: previousState.width,
+    minHeight: 600,
+    minWidth: 850,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       contextIsolation: true,
@@ -27,14 +38,18 @@ const createWindow = (): void => {
     },
   });
 
+  previousState.manage(mainWindow);
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
 
-  // install extensions
-  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).then(() => {});
+    // install extensions
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).then(() => {});
+  }
 };
 
 // This method will be called when Electron has finished
