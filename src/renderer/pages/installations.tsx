@@ -44,7 +44,7 @@ const Installations: React.VFC<Props> = () => {
   };
 
   return (
-    <Container className="h-full flex flex-row flex-grow overflow-y-auto">
+    <Container className="h-full flex flex-row flex-grow overflow-auto">
       <Sidebar items={SIDEBAR_ITEMS} />
       <div className="flex-grow flex flex-col">
         <div className="flex flex-row-reverse p-2">
@@ -61,17 +61,19 @@ const Installations: React.VFC<Props> = () => {
           </div>
         </div>
         {installations.length > 0 ? (
-          installations.map((w) => (
-            <div
-              key={w.executable}
-              className="h-14 px-4 border-b border-surface-light005 flex flex-row justify-center items-center"
-            >
-              <div className="flex-grow">Blender {w.version}</div>
-              <Button onClick={() => onExecuteBlender(w)} primary>
-                Launch
-              </Button>
-            </div>
-          ))
+          <div className="flex-auto overflow-y-auto h-full">
+            {installations.map((w) => (
+              <div
+                key={w.executable}
+                className="h-14 px-4 border-b border-surface-light005 flex flex-row justify-center items-center"
+              >
+                <div className="flex-grow">Blender {w.version}</div>
+                <Button onClick={() => onExecuteBlender(w)} primary>
+                  Launch
+                </Button>
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="h-full flex justify-center items-center">No installation found</div>
         )}
