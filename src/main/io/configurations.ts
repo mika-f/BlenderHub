@@ -10,6 +10,11 @@ import { getDefaultUserDataDirectory } from "main/io/directory";
 import { schema } from "main/schema/configuration";
 
 const readConfiguration = async (path: string): Promise<IConfiguration> => {
+  const isExists = await promisify(fs.exists)(path);
+  if (!isExists) {
+    return { version: "1.0", libraryPath: getDefaultUserDataDirectory() } as IConfiguration;
+  }
+
   const validator = new Ajv().compile({ ...(await schema()), $async: true } as AsyncSchema);
   const configuration = await promisify(fs.readFile)(path).then((w) => JSON.parse(w.toString()));
 
