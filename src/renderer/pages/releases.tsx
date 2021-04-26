@@ -41,7 +41,6 @@ const Releases: React.VFC<Props> = () => {
     };
     const onCompleted = (path: string) => {
       dispatch(extractDownloadedRelease({ path, branch, version: release.version })).then((w) => {
-        console.log(w.payload);
         // @ts-ignore
         dispatch(addInstallationFromRelease({ path: w.payload.path, release }));
         dispatch(flushInstallations());

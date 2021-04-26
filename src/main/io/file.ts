@@ -1,5 +1,5 @@
 import AdmZip from "adm-zip";
-import extractDmg from "extract-dmg";
+// import extractDmg from "extract-dmg";
 import fs from "fs";
 // import { createDecompressor } from "lzma-native";
 import path from "path";
@@ -7,8 +7,26 @@ import path from "path";
 import { promisify } from "util";
 import { getDefaultUserDataDirectory } from "./directory";
 
-const decompressDmg = async (src: string, dest: string): Promise<void> => {
-  await extractDmg(src, dest);
+const getDirectoryFilesInternal = (dirPath: string): string[] =>
+  fs.readdirSync(dirPath, { withFileTypes: true }).flatMap((w) => {
+    if (w.isFile()) {
+      return [path.join(dirPath, w.name)];
+    }
+
+    return getDirectoryFilesInternal(path.join(dirPath, w.name));
+  });
+
+const getDirectoryFiles = async (dirPath: string): Promise<string[]> => {
+  const isExists = await promisify(fs.exists)(dirPath);
+  if (!isExists) {
+    return [];
+  }
+
+  return getDirectoryFilesInternal(dirPath);
+};
+
+const decompressDmg = async (_src: string, _dest: string): Promise<void> => {
+  // await extractDmg(src, dest);
 };
 
 const decompressTarball = async (_src: string, _dest: string): Promise<void> => {
@@ -23,7 +41,7 @@ const decompressTarball = async (_src: string, _dest: string): Promise<void> => 
 const decompressZip = (src: string, dest: string): Promise<void> =>
   new Promise((resolve, reject) => {
     const zip = new AdmZip(src);
-    zip.extractAllToAsync(dest, false, (err) => {
+    zip.extractAllToAsync(dest, false, async (err) => {
       if (err) {
         return reject(err);
       }
@@ -63,4 +81,4 @@ const getConfigurationsFilePath = (): string => {
   return path.join(dir!, "configurations.json");
 };
 
-export { decompress, getConfigurationsFilePath };
+export { decompress, getConfigurationsFilePath, getDirectoryFiles };

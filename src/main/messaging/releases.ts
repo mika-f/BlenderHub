@@ -7,7 +7,7 @@ import { join } from "path";
 import { promisify } from "util";
 
 import { readConfiguration } from "main/io/configurations";
-import { decompress, getConfigurationsFilePath } from "main/io/file";
+import { decompress, getConfigurationsFilePath, getDirectoryFiles } from "main/io/file";
 import { makeDownloadUrl } from "main/io/url";
 import { fetchReleases } from "main/net/version-fetcher";
 import { getPlatform, getPlatformExecutable } from "main/platform";
@@ -47,7 +47,10 @@ const setup = () => {
       const dest = join(configuration.libraryPath, "versions", version);
       await decompress(path, dest);
 
-      return join(`${dest}`, `Blender.${getPlatformExecutable()}`);
+      const extracted = await getDirectoryFiles(dest);
+      return extracted.find(
+        (w) => w.endsWith(`Blender${getPlatformExecutable()}`) || w.endsWith(`blender${getPlatformExecutable()}`)
+      );
     }
   );
 
