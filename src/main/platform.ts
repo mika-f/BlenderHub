@@ -16,5 +16,21 @@ const getPlatform = (): Platform => {
   }
 };
 
+const getPlatformExecutable = (): string => {
+  switch (getPlatform()) {
+    case "linux":
+      return "";
+
+    case "macOS":
+      return ".app";
+
+    case "win":
+      return ".exe";
+
+    default:
+      throw new Error("Unsupported Platform");
+  }
+};
+
 export type { Platform };
-export { getPlatform };
+export { getPlatform, getPlatformExecutable };
