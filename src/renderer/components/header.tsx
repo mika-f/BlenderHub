@@ -8,8 +8,9 @@ type Props = {};
 // Hmm...?
 const getAppTitle = (path: string) => {
   switch (path) {
-    case "/settings":
-      return "Settings";
+    case "/settings/general":
+    case "/settings/":
+      return "Preferences";
 
     default:
       return "Blender Hub";
@@ -34,7 +35,7 @@ const Header: React.VFC<Props> = () => {
           ) : null}
           <div className="select-none ml-4">{title}</div>
         </div>
-        <Link to="/settings" className="mr-4">
+        <Link to="/settings/general" className="mr-4">
           <FontAwesome className="h-6 w-6" type="solid" icon="cog" />
         </Link>
       </div>

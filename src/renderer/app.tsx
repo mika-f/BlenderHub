@@ -25,7 +25,7 @@ const App: React.VFC = () => (
           <Route path="/releases/:branch">
             <Releases />
           </Route>
-          <Route path="/settings" exact>
+          <Route path="/settings/:category">
             <Settings />
           </Route>
         </Switch>
