@@ -68,7 +68,7 @@ const Releases: React.VFC<Props> = () => {
       <div className="flex-grow flex flex-col">
         <div className="flex flex-row-reverse p-2">
           <div className="flex flex-col flex-grow justify-center text-2xl">
-            <span className="capitalize">Releases ({branch})</span>
+            <span className="capitalize select-none">Releases ({branch})</span>
           </div>
         </div>
         {releases.length > 0 ? (
@@ -78,14 +78,14 @@ const Releases: React.VFC<Props> = () => {
                 key={w.url}
                 className="h-14 px-4 border-b border-surface-light005 flex flex-row justify-center items-center"
               >
-                <div className="flex-grow">Blender {w.version}</div>
+                <div className="flex-grow select-none">Blender {w.version}</div>
                 {isDownloading(w) ? (
                   <div className="m-2 h-2 w-24 bg-surface-light005">
                     <div className="min-w-0 max-w-24 bg-blue-500 h-2" style={{ width: `${w.state?.percentage}%` }} />
                   </div>
                 ) : null}
                 <Button onClick={() => onInstall(w)} primary disabled={isAlreadyInstalled(w) || isDownloading(w)}>
-                  {getLabel(w)}
+                  <div className="select-none">{getLabel(w)}</div>
                 </Button>
               </div>
             ))}

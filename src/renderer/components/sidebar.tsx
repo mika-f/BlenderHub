@@ -24,7 +24,7 @@ const Sidebar: React.VFC<Props> = ({ items }) => {
             key={item.path}
             className={`ml-4 h-12 flex flex-col justify-center ${additionalClasses}`}
           >
-            {item.title}
+            <div className="select-none">{item.title}</div>
           </Link>
         );
       })}

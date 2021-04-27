@@ -50,14 +50,16 @@ const Installations: React.VFC<Props> = () => {
         <div className="flex flex-row-reverse p-2">
           <Link to={`/releases/${branch}`} className="m-2">
             <Button onClick={() => {}} primary>
-              New Install
+              <div className="select-none">New Install</div>
             </Button>
           </Link>
           <div className="m-2">
-            <Button onClick={onAddExists}>Add Exists</Button>
+            <Button onClick={onAddExists}>
+              <div className="select-none">Add Exists</div>
+            </Button>
           </div>
           <div className="flex flex-col flex-grow justify-center text-2xl">
-            <span className="capitalize">Installations ({branch})</span>
+            <span className="capitalize select-none">Installations ({branch})</span>
           </div>
         </div>
         {installations.length > 0 ? (
@@ -67,15 +69,15 @@ const Installations: React.VFC<Props> = () => {
                 key={w.executable}
                 className="h-14 px-4 border-b border-surface-light005 flex flex-row justify-center items-center"
               >
-                <div className="flex-grow">Blender {w.version}</div>
+                <div className="flex-grow select-none">Blender {w.version}</div>
                 <Button onClick={() => onExecuteBlender(w)} primary>
-                  Launch
+                  <div className="select-none">Launch</div>
                 </Button>
               </div>
             ))}
           </div>
         ) : (
-          <div className="h-full flex justify-center items-center">No installation found</div>
+          <div className="h-full flex justify-center items-center select-none">No installation found</div>
         )}
       </div>
     </Container>
