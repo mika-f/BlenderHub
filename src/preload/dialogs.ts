@@ -6,9 +6,13 @@ import { ipcRenderer } from "electron";
 import type { FilePath, MessagingSignature } from "shared/messaging/dialogs";
 import type { MessagingSignature as PathsSignature } from "shared/messaging/paths";
 
-import { IPC_EVENT_NAME_SHOW_BLENDER_SELECT_DIALOG } from "shared/messaging/dialogs";
+import {
+  IPC_EVENT_NAME_SHOW_BLENDER_SELECT_DIALOG,
+  IPC_EVENT_NAME_SHOW_DIRECTORY_SELECT_DIALOG,
+} from "shared/messaging/dialogs";
 import { IPC_EVENT_NAME_DETECT_BLENDER_VERSION, IPC_EVENT_NAME_IS_VALID_BLENDER_PATH } from "shared/messaging/paths";
 
+type ReturnOf<T extends keyof MessagingSignature> = ReturnType<MessagingSignature[T]>;
 type PathReturnOf<T extends keyof PathsSignature> = ReturnType<PathsSignature[T]>;
 
 const signatures: MessagingSignature = {
@@ -31,6 +35,13 @@ const signatures: MessagingSignature = {
     })) as PathReturnOf<"detectBlenderVersion">;
 
     return { executable: path, version };
+  },
+  showDirectorySelectDialog: async (): Promise<string | null> => {
+    const directory = (await ipcRenderer.invoke(
+      IPC_EVENT_NAME_SHOW_DIRECTORY_SELECT_DIALOG
+    )) as ReturnOf<"showDirectorySelectDialog">;
+
+    return directory;
   },
 };
 

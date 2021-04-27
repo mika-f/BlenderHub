@@ -18,6 +18,11 @@ const readConfiguration = createAsyncThunk("configuration/read", async () => {
   return configuration;
 });
 
+const selectDirectory = createAsyncThunk<string | null, void>("configuration/selectDirectory", async () => {
+  const directory = await window.messaging.dialogs.showDirectorySelectDialog();
+  return directory;
+});
+
 const writeConfiguration = createAsyncThunk<void, { configuration: IConfiguration }>(
   "configuration/write",
   async ({ configuration }) => {
@@ -33,10 +38,14 @@ const slice = createSlice({
     builder.addCase(readConfiguration.fulfilled, (state, action) => {
       state.configuration = action.payload;
     });
+
+    builder.addCase(writeConfiguration.fulfilled, (state, action) => {
+      state.configuration = action.meta.arg.configuration;
+    });
   },
 });
 
 export { initialState, slice };
 export const { reducer } = slice;
-export { readConfiguration, writeConfiguration };
+export { readConfiguration, selectDirectory, writeConfiguration };
 // export const {} = slice.actions;

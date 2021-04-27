@@ -7,7 +7,8 @@ import Container from "renderer/components/container";
 import Input from "renderer/components/input";
 import Sidebar from "renderer/components/sidebar";
 import { useAppDispatch, useAppSelector } from "renderer/hooks/redux";
-import { readConfiguration } from "renderer/state/configuration";
+import { readConfiguration, selectDirectory, writeConfiguration } from "renderer/state/configuration";
+import { IConfiguration } from "shared/messaging/configuration";
 
 type Params = { category: "general" };
 
@@ -26,6 +27,16 @@ const Settings: React.VFC<Props> = () => {
   useEffect(() => {
     dispatch(readConfiguration());
   }, []);
+
+  const onClickSelectDirectory = () => {
+    dispatch(selectDirectory()).then((dir) => {
+      const newConfiguration: IConfiguration = {
+        ...configuration,
+        libraryPath: (dir.payload as string) ?? configuration.libraryPath,
+      };
+      dispatch(writeConfiguration({ configuration: newConfiguration }));
+    });
+  };
 
   return (
     <Container className="h-full flex flex-row flex-grow overflow-auto">
@@ -48,7 +59,7 @@ const Settings: React.VFC<Props> = () => {
               </div>
               <div className="flex w-full">
                 <Input className="flex-auto mr-2" value={configuration.libraryPath} readonly />
-                <Button primary>
+                <Button primary onClick={onClickSelectDirectory}>
                   <div className="select-none">Choose a Folder</div>
                 </Button>
               </div>
