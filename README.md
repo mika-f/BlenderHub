@@ -2,9 +2,13 @@
 
 Blender Hub is an application that could install, uninstall, manage Blender versions, and associate .blend extensions with a specific version.
 
-## Supported Platforms
+## Features
 
-- Windows
+- install / uninstall Blender of the stable, nightly (daily), and experimental builds from within the app
+- add existing Blender to the app
+- switch Blender to launch by default with one-click
+- cross-platform, it supports Windows, Linux, and macOS
+- supports version selector that likes Microsoft Visual Studio
 
 ## Development
 
