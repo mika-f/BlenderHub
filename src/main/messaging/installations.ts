@@ -2,7 +2,7 @@
 import { ipcMain } from "electron";
 import { spawn } from "child_process";
 import fs from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
 import { promisify } from "util";
 
 import type { Installation, Installations } from "shared/messaging/installations";
@@ -22,7 +22,9 @@ const setup = () => {
       return;
     }
 
-    spawn(installation.executable, { detached: true, stdio: "ignore" });
+    const cwd = dirname(installation.executable);
+
+    spawn(installation.executable, { cwd, detached: true, stdio: "ignore" });
   });
 
   ipcMain.handle(IPC_EVENT_NAME_FETCH_INSTALLATIONS, async () => {
