@@ -1,20 +1,22 @@
 import AdmZip from "adm-zip";
-// import extractDmg from "extract-dmg";
+import extractDmg from "extract-dmg";
 import fs from "fs";
-// import { createDecompressor } from "lzma-native";
+import { createDecompressor } from "lzma-native";
 import path from "path";
-// import tar from "tar";
+import tar from "tar";
 import { promisify } from "util";
 import { getDefaultUserDataDirectory } from "./directory";
 
-const getDirectoryFilesInternal = (dirPath: string): string[] =>
-  fs.readdirSync(dirPath, { withFileTypes: true }).flatMap((w) => {
-    if (w.isFile()) {
-      return [path.join(dirPath, w.name)];
-    }
+const getDirectoryFilesInternal = async (dirPath: string): Promise<string[]> => {
+  const entries = await promisify(fs.readdir)(dirPath, { withFileTypes: true });
+  const items = entries.filter((w) => w.isFile()).map((w) => path.join(dirPath, w.name));
 
-    return getDirectoryFilesInternal(path.join(dirPath, w.name));
-  });
+  const dirs = entries.filter((w) => w.isDirectory());
+  const promises = Promise.all(dirs.flatMap((w) => getDirectoryFilesInternal(path.join(dirPath, w.name))));
+  items.push(...(await promises).flatMap((w) => w));
+
+  return items;
+};
 
 const getDirectoryFiles = async (dirPath: string): Promise<string[]> => {
   const isExists = await promisify(fs.exists)(dirPath);
@@ -25,17 +27,20 @@ const getDirectoryFiles = async (dirPath: string): Promise<string[]> => {
   return getDirectoryFilesInternal(dirPath);
 };
 
-const decompressDmg = async (_src: string, _dest: string): Promise<void> => {
-  // await extractDmg(src, dest);
+const decompressDmg = async (src: string, dest: string): Promise<void> => {
+  await extractDmg(src, dest);
 };
 
-const decompressTarball = async (_src: string, _dest: string): Promise<void> => {
-  // const rs = fs.createReadStream(src);
-  // const tf = path.join(dest, "temporary.tat");
-  // const ws = fs.createWriteStream(tf);
-  // const decompressor = createDecompressor();
-  // rs.pipe(decompressor).pipe(ws);
-  // await tar.extract({ file: tf, cwd: dest });
+const decompressTarball = async (src: string, dest: string): Promise<void> => {
+  const rs = fs.createReadStream(src);
+  const tf = path.join(dest, "temporary.tar");
+  const ws = fs.createWriteStream(tf);
+
+  const decompressor = createDecompressor();
+
+  rs.pipe(decompressor).pipe(ws);
+
+  await tar.extract({ file: tf, cwd: dest });
 };
 
 const decompressZip = (src: string, dest: string): Promise<void> =>

@@ -1,0 +1,13 @@
+diff --git a/node_modules/@vercel/webpack-asset-relocator-loader/dist/index.js b/node_modules/@vercel/webpack-asset-relocator-loader/dist/index.js
+index bd8b557..48919ff 100644
+--- a/node_modules/@vercel/webpack-asset-relocator-loader/dist/index.js
++++ b/node_modules/@vercel/webpack-asset-relocator-loader/dist/index.js
+@@ -28166,7 +28166,7 @@ function injectPathHook (compilation, outputAssetBase) {
+         if (relBase.length)
+           relBase = '/' + relBase;
+       }
+-      return `${source}\nif (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = __dirname + ${JSON.stringify(relBase + '/' + assetBase(outputAssetBase))};`;
++      return `${source}\nif (typeof __webpack_require__ !== 'undefined') __webpack_require__.ab = (typeof __dirname === 'undefined' ? '' : __dirname) + ${JSON.stringify(relBase + '/' + assetBase(outputAssetBase))};`;
+     });
+   }
+ }

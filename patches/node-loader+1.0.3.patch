@@ -1,0 +1,29 @@
+diff --git a/node_modules/node-loader/dist/index.js b/node_modules/node-loader/dist/index.js
+index 89af5da..7029e5d 100644
+--- a/node_modules/node-loader/dist/index.js
++++ b/node_modules/node-loader/dist/index.js
+@@ -28,7 +28,23 @@ function loader(content) {
+     context: this.rootContext,
+     content
+   });
+-  this.emitFile(name, content);
++  if (Buffer.isBuffer(content)) {
++    const isPlainJs = content[0] === 0x6d // m
++    if (isPlainJs) {
++      const native = `__webpack_require__.ab + ${JSON.stringify(content.toString().match(/"(.*)"/)[1]).replace(/\//, '\\\\')}`;
++      
++      return `
++try {
++  process.dlopen(module, ${native}${typeof options.flags !== 'undefined' ? `, ${JSON.stringify(options.flags)}` : ''});
++} catch (error) {
++  throw new Error('node-loader:\\n' + error);
++}
++      `;
++    }
++  } else {
++    // through
++    this.emitFile(name, content);
++  }
+   return `
+ try {
+   process.dlopen(module, __dirname + require("path").sep + __webpack_public_path__ + ${JSON.stringify(name)}${typeof options.flags !== 'undefined' ? `, ${JSON.stringify(options.flags)}` : ''});
