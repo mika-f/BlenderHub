@@ -1,6 +1,6 @@
 {
   "name": "blender-hub",
-  "productName": "Blender Hub",
+  "productName": "BlenderHub",
   "version": "0.1.0",
   "description": "Blender Hub is an application that could install, uninstall, manage Blender versions, and associate .blend extensions with a specific version.",
   "main": ".webpack/main",
@@ -13,6 +13,9 @@
     "make:mac-x64": "electron-forge make --arch x64 --platform darwin",
     "make:mac-arm": "electron-forge make --arch arm64 --platform darwin",
     "make:linux": "electron-forge make --arch x64 --platform linux",
+    "installer": "run-s --continue-on-error installer:*",
+    "installer:x64": "cross-env BUILD_ARCH=x64 ts-node bin/win.ts",
+    "installer:arm": "cross-env BUILD_ARCH=arm64 ts-node bin/win.ts",
     "publish": "electron-forge publish",
     "test": "jest",
     "lint": "run-p lint:*",
@@ -34,7 +37,8 @@
         "appCopyright": "Copyright (c) 2021 Natsuneko",
         "win32metadata": {
           "CompanyName": "Natsuneko Laboratory"
-        }
+        },
+        "icon": "./src/assets/BlenderHub"
       },
       "makers": [
         {
@@ -51,7 +55,9 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "icon": "./src/assets/BlenderHub.png"
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
@@ -101,9 +107,11 @@
     "@typescript-eslint/parser": "^4.0.1",
     "autoprefixer": "^10.2.5",
     "copy-webpack-plugin": "^6.4.1",
+    "cross-env": "^7.0.3",
     "css-loader": "^4.2.1",
     "electron": "12.0.5",
     "electron-devtools-installer": "^3.2.0",
+    "electron-winstaller": "^5.0.0",
     "eslint": "^7.24.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",
@@ -126,6 +134,7 @@
     "style-loader": "^1.2.1",
     "tailwindcss": "^2.1.1",
     "ts-loader": "^8.0.2",
+    "ts-node": "^9.1.1",
     "typescript": "^4.0.2",
     "typescript-json-schema": "^0.50.0"
   },

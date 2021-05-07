@@ -4,6 +4,7 @@ import { app, BrowserWindow } from "electron";
 import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from "electron-devtools-installer";
 import isDev from "electron-is-dev";
 import windowStateKeeper from "electron-window-state";
+import path from "path";
 
 import { runUpdater } from "./auto-update";
 import { registerIpcMessagingApis } from "./messaging";
@@ -31,6 +32,7 @@ const createWindow = (): void => {
     width: previousState.width,
     minHeight: 600,
     minWidth: 850,
+    icon: path.join(__dirname, "..", "assets", "BlenderHub.png"),
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       contextIsolation: true,

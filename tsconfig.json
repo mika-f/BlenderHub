@@ -76,6 +76,7 @@
     "resolveJsonModule": true
   },
   "include": [
+    "bin/**/*.ts",
     "src/electron.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx"

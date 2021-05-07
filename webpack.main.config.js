@@ -7,7 +7,8 @@ const plugins = [];
 const additionalPlugins = [
   new CopyWebpackPlugin({
     patterns: [
-      { context: path.resolve(__dirname, "src/main/schema"), from: "*.json", to: path.resolve(__dirname, ".webpack/main")}
+      {context: path.resolve(__dirname, "src/main/schema"), from: "*.json", to: path.resolve(__dirname, ".webpack/main")},
+      {context: path.resolve(__dirname, "src/assets"), from: "**/*.*", to: path.resolve(__dirname, ".webpack/assets")},
     ]
   }),
   // process.env.NODE_ENV !== "production" && new ReactRefreshWebpackPlugin(),
